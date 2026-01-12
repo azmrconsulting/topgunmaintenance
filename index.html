@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         :root {
             --midnight: #0a0f1a;
@@ -1189,6 +1191,211 @@
             color: var(--cyan);
         }
 
+        /* Coverage Map Section */
+        .coverage {
+            padding: 8rem 3rem;
+            background: var(--midnight);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coverage-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .map-wrapper {
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        .map-hud {
+            position: relative;
+            border: 1px solid var(--gunmetal);
+            background: var(--navy);
+        }
+
+        .map-hud::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan) 0%, var(--amber) 50%, var(--cyan) 100%);
+            z-index: 1000;
+        }
+
+        .hud-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 500;
+        }
+
+        .hud-corner-map {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--cyan);
+            z-index: 501;
+        }
+
+        .hud-corner-map.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .hud-corner-map.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+        .hud-corner-map.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+        .hud-corner-map.br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+        .hud-label {
+            position: absolute;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            color: var(--cyan);
+            letter-spacing: 2px;
+            background: rgba(10, 15, 26, 0.8);
+            padding: 0.5rem 1rem;
+            z-index: 502;
+        }
+
+        .hud-label.top-left { top: 20px; left: 60px; }
+        .hud-label.top-right { top: 20px; right: 60px; }
+        .hud-label.bottom-left { bottom: 20px; left: 60px; }
+
+        .hud-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hud-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--cyan);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--cyan); }
+            50% { opacity: 0.5; box-shadow: 0 0 15px var(--cyan); }
+        }
+
+        #coverage-map {
+            width: 100%;
+            height: 600px;
+            background: var(--midnight);
+        }
+
+        .map-legend {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .legend-marker {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .legend-marker.hq { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+        .legend-marker.ga { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+        .legend-marker.intl { background: #ff3366; box-shadow: 0 0 10px #ff3366; }
+        .legend-marker.radius { background: transparent; border: 2px dashed var(--cyan-dim); width: 20px; height: 20px; }
+
+        .legend-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .coverage-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .coverage-stat {
+            text-align: center;
+            padding: 2rem;
+            background: var(--steel);
+            border: 1px solid var(--gunmetal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coverage-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--cyan);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .coverage-stat:hover::before { transform: scaleX(1); }
+
+        .coverage-stat-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cyan);
+            line-height: 1;
+        }
+
+        .coverage-stat-label {
+            font-size: 0.85rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        /* Leaflet Custom Styles */
+        .leaflet-popup-content-wrapper {
+            background: var(--steel);
+            border: 1px solid var(--cyan-dim);
+            border-radius: 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .leaflet-popup-content { margin: 0; font-family: 'Rajdhani', sans-serif; }
+        .leaflet-popup-tip { background: var(--steel); border: 1px solid var(--cyan-dim); border-top: none; border-left: none; }
+
+        .airport-popup { padding: 1rem; min-width: 200px; }
+        .airport-popup-header { font-family: 'Orbitron', monospace; font-size: 0.7rem; color: var(--amber); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; }
+        .airport-popup-name { font-size: 1.1rem; font-weight: 600; color: var(--white); margin-bottom: 0.25rem; }
+        .airport-popup-code { font-family: 'Orbitron', monospace; font-size: 1.5rem; font-weight: 800; color: var(--cyan); letter-spacing: 3px; }
+        .airport-popup-state { font-size: 0.85rem; color: var(--silver); margin-top: 0.5rem; }
+        .airport-popup-services { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--gunmetal); font-size: 0.8rem; color: var(--chrome); }
+
+        .leaflet-control-zoom { border: none !important; }
+        .leaflet-control-zoom a { background: var(--steel) !important; color: var(--cyan) !important; border: 1px solid var(--gunmetal) !important; font-family: 'Orbitron', monospace !important; }
+        .leaflet-control-zoom a:hover { background: var(--navy) !important; color: var(--white) !important; }
+        .leaflet-control-attribution { background: rgba(10, 15, 26, 0.8) !important; color: var(--silver) !important; font-size: 0.6rem !important; }
+        .leaflet-control-attribution a { color: var(--cyan) !important; }
+
+        .pulse-marker { animation: marker-pulse 2s ease-in-out infinite; }
+        @keyframes marker-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
         /* Animations */
         .fade-up {
             opacity: 0;
@@ -1203,6 +1410,10 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
+            .coverage-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
             .radar-container {
                 display: none;
             }
@@ -1352,9 +1563,37 @@
 
             .services,
             .about,
+            .coverage,
             .contact {
                 padding: 4rem 1rem;
             }
+
+            #coverage-map {
+                height: 400px;
+            }
+
+            .hud-label {
+                font-size: 0.5rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .hud-label.top-left { top: 10px; left: 50px; }
+            .hud-label.top-right { display: none; }
+            .hud-label.bottom-left { bottom: 10px; left: 50px; }
+
+            .hud-corner-map { width: 25px; height: 25px; }
+
+            .map-legend { gap: 1rem; }
+            .legend-text { font-size: 0.6rem; }
+
+            .coverage-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .coverage-stat { padding: 1rem; }
+            .coverage-stat-value { font-size: 1.75rem; }
+            .coverage-stat-label { font-size: 0.7rem; }
 
             .section-header {
                 margin-bottom: 3rem;
@@ -1629,6 +1868,7 @@
         <ul class="nav-links">
             <li><a href="#services">Services</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#coverage">Coverage</a></li>
             <li><a href="#gallery">Gallery</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -1645,6 +1885,7 @@
         <ul class="mobile-menu-links">
             <li><a href="#services">Services</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#coverage">Coverage</a></li>
             <li><a href="#gallery">Gallery</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -1846,6 +2087,71 @@
                         <div class="credential-title">Response Time</div>
                         <div class="credential-value">24/7 AOG Support</div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coverage Map Section -->
+    <section class="coverage" id="coverage">
+        <div class="coverage-container">
+            <div class="section-header">
+                <div class="section-tag">Service Area</div>
+                <h2 class="section-title">2.5-Hour Rapid Response Coverage</h2>
+            </div>
+
+            <div class="map-wrapper fade-up">
+                <div class="map-hud">
+                    <div id="coverage-map"></div>
+                    <div class="hud-overlay">
+                        <div class="hud-corner-map tl"></div>
+                        <div class="hud-corner-map tr"></div>
+                        <div class="hud-corner-map bl"></div>
+                        <div class="hud-corner-map br"></div>
+                        <div class="hud-label top-left">
+                            <div class="hud-status">COVERAGE ACTIVE</div>
+                        </div>
+                        <div class="hud-label top-right">NJ | NY | CT | PA | DE</div>
+                        <div class="hud-label bottom-left">BASE: MMU | MORRISTOWN, NJ</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-legend fade-up">
+                <div class="legend-item">
+                    <div class="legend-marker hq"></div>
+                    <span class="legend-text">Home Base (MMU)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-marker ga"></div>
+                    <span class="legend-text">GA / Business Aviation</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-marker intl"></div>
+                    <span class="legend-text">International / Major Hub</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-marker radius"></div>
+                    <span class="legend-text">2.5hr Response Radius</span>
+                </div>
+            </div>
+
+            <div class="coverage-stats fade-up">
+                <div class="coverage-stat">
+                    <div class="coverage-stat-value">42</div>
+                    <div class="coverage-stat-label">Airports Served</div>
+                </div>
+                <div class="coverage-stat">
+                    <div class="coverage-stat-value">5</div>
+                    <div class="coverage-stat-label">States Covered</div>
+                </div>
+                <div class="coverage-stat">
+                    <div class="coverage-stat-value">2.5</div>
+                    <div class="coverage-stat-label">Hour Response</div>
+                </div>
+                <div class="coverage-stat">
+                    <div class="coverage-stat-value">24/7</div>
+                    <div class="coverage-stat-label">AOG Available</div>
                 </div>
             </div>
         </div>
@@ -2127,6 +2433,112 @@
                 block: 'start'
             });
         });
+
+        // Coverage Map Initialization
+        const initCoverageMap = () => {
+            const homeBase = [40.7994, -74.4149];
+            const map = L.map('coverage-map', { center: homeBase, zoom: 7, zoomControl: true, scrollWheelZoom: true });
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap &copy; CARTO',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            const airports = {
+                headquarters: [{ code: 'MMU', name: 'Morristown Municipal', state: 'NJ', lat: 40.7994, lng: -74.4149 }],
+                gaAirports: [
+                    { code: 'CDW', name: 'Essex County Caldwell', state: 'NJ', lat: 40.8752, lng: -74.2815 },
+                    { code: 'SMQ', name: 'Somerset', state: 'NJ', lat: 40.6260, lng: -74.6702 },
+                    { code: 'LDJ', name: 'Linden', state: 'NJ', lat: 40.6174, lng: -74.2446 },
+                    { code: '47N', name: 'Central Jersey Regional - Manville', state: 'NJ', lat: 40.5243, lng: -74.5988 },
+                    { code: 'N87', name: 'Trenton Robbinsville', state: 'NJ', lat: 40.2132, lng: -74.6016 },
+                    { code: '3N6', name: 'Old Bridge', state: 'NJ', lat: 40.3299, lng: -74.3468 },
+                    { code: 'N12', name: 'Lakewood', state: 'NJ', lat: 40.0668, lng: -74.1775 },
+                    { code: 'VAY', name: 'South Jersey Regional - Mount Holly', state: 'NJ', lat: 39.9429, lng: -74.8457 },
+                    { code: '44N', name: 'Sky Acres', state: 'NY', lat: 41.7054, lng: -73.7380 },
+                    { code: 'MGJ', name: 'Orange County', state: 'NY', lat: 41.5101, lng: -74.2646 },
+                    { code: 'MSV', name: 'Sullivan County', state: 'NY', lat: 41.7016, lng: -74.7950 },
+                    { code: 'HWV', name: 'Brookhaven', state: 'NY', lat: 40.8219, lng: -72.8624 },
+                    { code: 'HTO', name: 'East Hampton', state: 'NY', lat: 40.9596, lng: -72.2518 },
+                    { code: 'DXR', name: 'Danbury', state: 'CT', lat: 41.3715, lng: -73.4822 },
+                    { code: 'OXC', name: 'Oxford', state: 'CT', lat: 41.4786, lng: -73.1352 },
+                    { code: 'SNC', name: 'Chester', state: 'CT', lat: 41.3840, lng: -72.5060 },
+                    { code: 'MMK', name: 'Meriden Markham', state: 'CT', lat: 41.5088, lng: -72.8295 },
+                    { code: 'IJD', name: 'Windham', state: 'CT', lat: 41.7440, lng: -72.1803 },
+                    { code: 'GON', name: 'Groton New London', state: 'CT', lat: 41.3301, lng: -72.0451 },
+                    { code: 'DYL', name: 'Doylestown', state: 'PA', lat: 40.3330, lng: -75.1223 },
+                    { code: 'UKT', name: 'Quakertown', state: 'PA', lat: 40.4352, lng: -75.3819 },
+                    { code: 'N10', name: 'Perkiomen Valley', state: 'PA', lat: 40.3721, lng: -75.4841 },
+                    { code: 'OQN', name: 'Brandywine', state: 'PA', lat: 39.9901, lng: -75.5819 },
+                    { code: 'RDG', name: 'Reading Regional', state: 'PA', lat: 40.3785, lng: -75.9652 },
+                    { code: 'LNS', name: 'Lancaster', state: 'PA', lat: 40.1217, lng: -76.2961 },
+                    { code: 'ILG', name: 'Wilmington', state: 'DE', lat: 39.6787, lng: -75.6065 },
+                    { code: 'HFD', name: 'Hartford Brainard', state: 'CT', lat: 41.7367, lng: -72.6494 }
+                ],
+                majorAirports: [
+                    { code: 'TEB', name: 'Teterboro', state: 'NJ', lat: 40.8501, lng: -74.0608 },
+                    { code: 'EWR', name: 'Newark Liberty Intl', state: 'NJ', lat: 40.6925, lng: -74.1687 },
+                    { code: 'HPN', name: 'Westchester County', state: 'NY', lat: 41.0670, lng: -73.7076 },
+                    { code: 'FRG', name: 'Republic', state: 'NY', lat: 40.7288, lng: -73.4134 },
+                    { code: 'ISP', name: 'Long Island MacArthur', state: 'NY', lat: 40.7952, lng: -73.1002 },
+                    { code: 'SWF', name: 'Stewart Intl', state: 'NY', lat: 41.5041, lng: -74.1048 },
+                    { code: 'JFK', name: 'John F. Kennedy Intl', state: 'NY', lat: 40.6413, lng: -73.7781 },
+                    { code: 'LGA', name: 'LaGuardia', state: 'NY', lat: 40.7769, lng: -73.8740 },
+                    { code: 'PHL', name: 'Philadelphia Intl', state: 'PA', lat: 39.8729, lng: -75.2437 },
+                    { code: 'PNE', name: 'Northeast Philadelphia', state: 'PA', lat: 40.0819, lng: -75.0105 },
+                    { code: 'ABE', name: 'Lehigh Valley Intl', state: 'PA', lat: 40.6521, lng: -75.4408 },
+                    { code: 'BDL', name: 'Bradley Intl', state: 'CT', lat: 41.9389, lng: -72.6832 },
+                    { code: 'HVN', name: 'Tweed New Haven', state: 'CT', lat: 41.2638, lng: -72.8868 },
+                    { code: 'TTN', name: 'Trenton Mercer', state: 'NJ', lat: 40.2767, lng: -74.8135 }
+                ]
+            };
+
+            const createIcon = (color, size = 12, isHQ = false) => {
+                const pulseClass = isHQ ? 'pulse-marker' : '';
+                return L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div class="${pulseClass}" style="width:${size}px;height:${size}px;background:${color};border-radius:50%;border:2px solid rgba(255,255,255,0.3);box-shadow:0 0 ${isHQ?'20':'10'}px ${color},0 0 ${isHQ?'40':'20'}px ${color}40;"></div>`,
+                    iconSize: [size, size],
+                    iconAnchor: [size/2, size/2]
+                });
+            };
+
+            const hqIcon = createIcon('#ff6b35', 20, true);
+            const gaIcon = createIcon('#00d4ff', 10);
+            const majorIcon = createIcon('#ff3366', 14);
+
+            const createPopup = (airport, type) => {
+                const typeLabel = type === 'hq' ? 'Headquarters' : type === 'major' ? 'Major Hub' : 'GA / Business';
+                const services = type === 'hq' ? 'Full maintenance services available' : 'Mobile A&P/IA services available';
+                return `<div class="airport-popup"><div class="airport-popup-header">${typeLabel}</div><div class="airport-popup-code">${airport.code}</div><div class="airport-popup-name">${airport.name}</div><div class="airport-popup-state">${airport.state}</div><div class="airport-popup-services">${services}</div></div>`;
+            };
+
+            L.circle(homeBase, { radius: 241000, color: '#00d4ff', fillColor: '#00d4ff', fillOpacity: 0.05, weight: 2, dashArray: '10, 10' }).addTo(map);
+            L.circle(homeBase, { radius: 96000, color: '#00d4ff', fillColor: '#00d4ff', fillOpacity: 0.03, weight: 1, dashArray: '5, 10', opacity: 0.5 }).addTo(map);
+
+            airports.headquarters.forEach(a => L.marker([a.lat, a.lng], { icon: hqIcon }).bindPopup(createPopup(a, 'hq')).addTo(map));
+            airports.gaAirports.forEach(a => L.marker([a.lat, a.lng], { icon: gaIcon }).bindPopup(createPopup(a, 'ga')).addTo(map));
+            airports.majorAirports.forEach(a => L.marker([a.lat, a.lng], { icon: majorIcon }).bindPopup(createPopup(a, 'major')).addTo(map));
+
+            const pulseRing = L.circle(homeBase, { radius: 15000, color: '#ff6b35', fillColor: 'transparent', weight: 2, opacity: 0.8 }).addTo(map);
+            let ringRadius = 15000, expanding = true;
+            setInterval(() => {
+                ringRadius += expanding ? 500 : -500;
+                if (ringRadius >= 30000) expanding = false;
+                if (ringRadius <= 15000) expanding = true;
+                pulseRing.setRadius(ringRadius);
+            }, 100);
+
+            const allCoords = [...airports.headquarters, ...airports.gaAirports, ...airports.majorAirports].map(a => [a.lat, a.lng]);
+            map.fitBounds(allCoords, { padding: [50, 50] });
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCoverageMap);
+        } else {
+            initCoverageMap();
+        }
     </script>
 </body>
 </html>
