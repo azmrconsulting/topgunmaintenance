@@ -187,53 +187,21 @@
         }
 
         .logo {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--white);
-            text-transform: uppercase;
-            letter-spacing: 3px;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
             text-decoration: none;
             cursor: pointer;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s, transform 0.3s;
         }
 
         .logo:hover {
-            opacity: 0.8;
+            opacity: 0.9;
+            transform: scale(1.02);
         }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--amber);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .logo-icon::before {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 2px;
-            background: var(--amber);
-            transform: rotate(45deg);
-        }
-
-        .logo-icon::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 14px solid var(--amber);
-            transform: translateY(-2px);
+        .logo-img {
+            height: 45px;
+            width: auto;
         }
 
         .nav-links {
@@ -1614,26 +1582,8 @@
                 gap: 0.5rem;
             }
 
-            .logo {
-                font-size: 1rem;
-                letter-spacing: 1px;
-                gap: 0.5rem;
-            }
-
-            .logo-icon {
-                width: 32px;
-                height: 32px;
-                flex-shrink: 0;
-            }
-
-            .logo-icon::before {
-                width: 14px;
-            }
-
-            .logo-icon::after {
-                border-left: 6px solid transparent;
-                border-right: 6px solid transparent;
-                border-bottom: 10px solid var(--amber);
+            .logo-img {
+                height: 35px;
             }
 
             .nav-links {
@@ -1986,8 +1936,8 @@
 
         /* Extra small devices */
         @media (max-width: 380px) {
-            .logo {
-                font-size: 0.85rem;
+            .logo-img {
+                height: 28px;
             }
 
             .nav-cta {
@@ -2042,8 +1992,7 @@
     <!-- Navigation -->
     <nav>
         <a href="#" class="logo">
-            <div class="logo-icon"></div>
-            Top Gun
+            <img src="images/topgunlogo.jpeg" alt="Topgun Maintenance Logo" class="logo-img">
         </a>
         <ul class="nav-links">
             <li><a href="#services">Services</a></li>
