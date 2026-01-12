@@ -1528,20 +1528,44 @@
 
         @media (max-width: 768px) {
             .announcement-bar {
-                padding: 0.5rem 0.75rem;
+                padding: 0.4rem 0.5rem;
+                position: relative;
             }
 
             .announcement-content {
-                gap: 0.5rem;
+                gap: 0.75rem;
+                justify-content: space-around;
             }
 
             .announcement-item {
-                font-size: 0.7rem;
+                font-size: 0.6rem;
+                gap: 0.3rem;
+            }
+
+            .announcement-item span {
+                display: none;
+            }
+
+            .announcement-item::after {
+                font-size: 0.55rem;
+                white-space: nowrap;
+            }
+
+            .announcement-item:nth-child(1)::after {
+                content: 'Mobile Service';
+            }
+
+            .announcement-item:nth-child(3)::after {
+                content: 'We Come To You';
+            }
+
+            .announcement-item:nth-child(5)::after {
+                content: '24/7 Available';
             }
 
             .announcement-item svg {
-                width: 12px;
-                height: 12px;
+                width: 14px;
+                height: 14px;
             }
 
             .announcement-divider {
@@ -1574,16 +1598,13 @@
             }
 
             nav {
-                top: 32px;
-            }
-
-            nav {
-                padding: 1rem 1rem;
+                top: 28px;
+                padding: 0.75rem 1rem;
                 gap: 0.5rem;
             }
 
             .logo-img {
-                height: 35px;
+                height: 32px;
             }
 
             .nav-links {
@@ -1600,14 +1621,15 @@
 
             .mobile-menu {
                 display: block;
-                top: 32px;
-                height: calc(100vh - 32px);
+                top: 28px;
+                height: calc(100vh - 28px);
+                padding-top: 4rem;
             }
 
             .hero {
                 padding: 5rem 1rem;
                 min-height: auto;
-                padding-top: 7rem;
+                padding-top: 6rem;
             }
 
             .hero-content {
