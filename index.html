@@ -86,6 +86,13 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
         }
 
         .logo-icon {
@@ -1462,10 +1469,10 @@
 <body>
     <!-- Navigation -->
     <nav>
-        <div class="logo">
+        <a href="#" class="logo">
             <div class="logo-icon"></div>
             Top Gun
-        </div>
+        </a>
         <ul class="nav-links">
             <li><a href="#services">Services</a></li>
             <li><a href="#about">About</a></li>
@@ -1845,11 +1852,28 @@
             });
         });
 
-        // Mobile menu toggle
+        // Mobile menu elements
         const menuToggle = document.querySelector('.menu-toggle');
         const mobileMenu = document.querySelector('.mobile-menu');
         const mobileMenuLinks = document.querySelectorAll('.mobile-menu-links a');
         const mobileMenuCta = document.querySelector('.mobile-menu-cta');
+
+        // Logo click - scroll to top
+        document.querySelector('.logo').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            // Close mobile menu if open
+            if (menuToggle && menuToggle.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Mobile menu toggle
 
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
