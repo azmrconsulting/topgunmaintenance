@@ -68,8 +68,11 @@
             background: linear-gradient(90deg, var(--amber) 0%, #ff8c42 50%, var(--amber) 100%);
             padding: 0.6rem 1rem;
             text-align: center;
-            position: relative;
-            z-index: 100;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
         }
 
         .announcement-content {
@@ -171,7 +174,7 @@
         /* Navigation */
         nav {
             position: fixed;
-            top: 0;
+            top: 40px;
             left: 0;
             right: 0;
             z-index: 1000;
@@ -314,10 +317,10 @@
         .mobile-menu {
             display: none;
             position: fixed;
-            top: 0;
+            top: 40px;
             left: 0;
             width: 100%;
-            height: 100vh;
+            height: calc(100vh - 40px);
             background: linear-gradient(180deg, var(--midnight) 0%, var(--navy) 100%);
             z-index: 999;
             padding: 5rem 2rem 2rem;
@@ -382,7 +385,7 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            padding: 6rem 3rem;
+            padding: 8rem 3rem 6rem;
         }
 
         .hero-bg {
@@ -1525,39 +1528,21 @@
 
         @media (max-width: 768px) {
             .announcement-bar {
-                padding: 0.4rem 0.5rem;
+                padding: 0.5rem 0.75rem;
                 position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
             }
 
             .announcement-content {
-                gap: 0.75rem;
-                justify-content: space-around;
+                gap: 1rem;
+                justify-content: center;
             }
 
             .announcement-item {
-                font-size: 0.6rem;
-                gap: 0.3rem;
-            }
-
-            .announcement-item span {
-                display: none;
-            }
-
-            .announcement-item::after {
-                font-size: 0.55rem;
-                white-space: nowrap;
-            }
-
-            .announcement-item:nth-child(1)::after {
-                content: 'Mobile Service';
-            }
-
-            .announcement-item:nth-child(3)::after {
-                content: 'We Come To You';
-            }
-
-            .announcement-item:nth-child(5)::after {
-                content: '24/7 Available';
+                font-size: 0.65rem;
+                gap: 0.4rem;
             }
 
             .announcement-item svg {
@@ -1595,6 +1580,7 @@
             }
 
             nav {
+                top: 0;
                 padding: 0.75rem 1rem;
                 gap: 0.5rem;
             }
@@ -1617,6 +1603,8 @@
 
             .mobile-menu {
                 display: block;
+                top: 0;
+                height: 100vh;
             }
 
             .hero {
