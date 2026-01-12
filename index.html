@@ -319,7 +319,10 @@
             background:
                 radial-gradient(ellipse at 20% 50%, var(--cyan-glow) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 50%, var(--amber-glow) 0%, transparent 40%),
-                linear-gradient(180deg, var(--midnight) 0%, var(--navy) 50%, var(--midnight) 100%);
+                linear-gradient(180deg, rgba(10, 15, 26, 0.95) 0%, rgba(13, 24, 41, 0.9) 50%, rgba(10, 15, 26, 0.95) 100%),
+                url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
         }
 
         /* Technical grid */
@@ -612,6 +615,22 @@
             transition: all 0.4s;
         }
 
+        .service-card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.08;
+            transition: opacity 0.4s;
+        }
+
+        .service-card:hover .service-card-bg {
+            opacity: 0.15;
+        }
+
         .service-card::before {
             content: '';
             position: absolute;
@@ -728,7 +747,11 @@
             width: 100%;
             height: 100%;
             border: 1px solid var(--gunmetal);
-            background: linear-gradient(135deg, var(--steel) 0%, var(--navy) 100%);
+            background:
+                linear-gradient(135deg, rgba(26, 39, 68, 0.85) 0%, rgba(13, 24, 41, 0.9) 100%),
+                url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80');
+            background-size: cover;
+            background-position: center;
         }
 
         .hud-corner {
@@ -863,6 +886,95 @@
             font-size: 1rem;
             color: var(--white);
             font-weight: 600;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 8rem 3rem;
+            background: var(--navy);
+            position: relative;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 250px);
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 50%, rgba(10, 15, 26, 0.9) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item:nth-child(5) {
+            grid-column: span 2;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            z-index: 2;
+            transform: translateY(100%);
+            transition: transform 0.4s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        .gallery-caption h4 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+
+        .gallery-caption p {
+            font-size: 0.85rem;
+            color: var(--silver);
         }
 
         /* Contact Section */
@@ -1111,6 +1223,20 @@
             .contact-wrapper {
                 grid-template-columns: 1fr;
             }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+
+            .gallery-item:nth-child(1) {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+
+            .gallery-item:nth-child(5) {
+                grid-column: span 1;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1313,6 +1439,33 @@
                 font-size: 0.9rem;
             }
 
+            .gallery {
+                padding: 4rem 1rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .gallery-item:nth-child(1),
+            .gallery-item:nth-child(5) {
+                grid-column: span 1;
+            }
+
+            .gallery-item {
+                height: 200px;
+            }
+
+            .gallery-caption {
+                transform: translateY(0);
+                padding: 1rem;
+            }
+
+            .gallery-item::before {
+                opacity: 1;
+            }
+
             .hud-readout {
                 font-size: 0.55rem;
                 top: 10px;
@@ -1476,6 +1629,7 @@
         <ul class="nav-links">
             <li><a href="#services">Services</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#gallery">Gallery</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <button class="nav-cta">Request Service</button>
@@ -1491,6 +1645,7 @@
         <ul class="mobile-menu-links">
             <li><a href="#services">Services</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#gallery">Gallery</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <button class="mobile-menu-cta">Request Service</button>
@@ -1550,6 +1705,7 @@
 
         <div class="services-grid">
             <div class="service-card fade-up">
+                <div class="service-card-bg" style="background-image: url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=600&q=80')"></div>
                 <div class="service-number">01</div>
                 <div class="service-icon">
                     <svg viewBox="0 0 80 80">
@@ -1572,6 +1728,7 @@
             </div>
 
             <div class="service-card fade-up">
+                <div class="service-card-bg" style="background-image: url('https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&q=80')"></div>
                 <div class="service-number">02</div>
                 <div class="service-icon">
                     <svg viewBox="0 0 80 80">
@@ -1598,6 +1755,7 @@
             </div>
 
             <div class="service-card fade-up">
+                <div class="service-card-bg" style="background-image: url('https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=600&q=80')"></div>
                 <div class="service-number">03</div>
                 <div class="service-icon">
                     <svg viewBox="0 0 80 80">
@@ -1622,6 +1780,7 @@
             </div>
 
             <div class="service-card fade-up">
+                <div class="service-card-bg" style="background-image: url('https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=600&q=80')"></div>
                 <div class="service-number">04</div>
                 <div class="service-icon">
                     <svg viewBox="0 0 80 80">
@@ -1687,6 +1846,59 @@
                         <div class="credential-title">Response Time</div>
                         <div class="credential-value">24/7 AOG Support</div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="section-header">
+            <div class="section-tag">Our Work</div>
+            <h2 class="section-title">Project Gallery</h2>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item fade-up">
+                <img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80" alt="Aircraft engine maintenance">
+                <div class="gallery-caption">
+                    <h4>Engine Overhaul</h4>
+                    <p>Complete turbine engine inspection and repair</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up">
+                <img src="https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=600&q=80" alt="Drone aerial view">
+                <div class="gallery-caption">
+                    <h4>Aerial Survey</h4>
+                    <p>Infrastructure thermal inspection</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up">
+                <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80" alt="Aircraft wing">
+                <div class="gallery-caption">
+                    <h4>Wing Inspection</h4>
+                    <p>Structural integrity assessment</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up">
+                <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&q=80" alt="Drone flying">
+                <div class="gallery-caption">
+                    <h4>Drone Operations</h4>
+                    <p>Part 107 certified flights</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up">
+                <img src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80" alt="Aircraft cockpit">
+                <div class="gallery-caption">
+                    <h4>Avionics Upgrade</h4>
+                    <p>Modern glass cockpit installation</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up">
+                <img src="https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=600&q=80" alt="Aircraft on runway">
+                <div class="gallery-caption">
+                    <h4>Pre-Flight Check</h4>
+                    <p>Comprehensive safety inspection</p>
                 </div>
             </div>
         </div>
