@@ -63,10 +63,118 @@
             z-index: 9999;
         }
 
+        /* Announcement Bar */
+        .announcement-bar {
+            background: linear-gradient(90deg, var(--amber) 0%, #ff8c42 50%, var(--amber) 100%);
+            padding: 0.6rem 1rem;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+        }
+
+        .announcement-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .announcement-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--midnight);
+        }
+
+        .announcement-item svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--midnight);
+            stroke-width: 2.5;
+            fill: none;
+        }
+
+        .announcement-divider {
+            width: 4px;
+            height: 4px;
+            background: var(--midnight);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        /* Quick Info Cards */
+        .quick-info {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: rgba(26, 39, 68, 0.8);
+            border: 1px solid var(--gunmetal);
+            padding: 1.25rem 1.5rem;
+            flex: 1;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--cyan);
+        }
+
+        .info-card:hover {
+            border-color: var(--cyan-dim);
+            transform: translateY(-3px);
+        }
+
+        .info-card-label {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card-value {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .info-card-icon {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 0.75rem;
+            stroke: var(--amber);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
         /* Navigation */
         nav {
             position: fixed;
-            top: 0;
+            top: 40px;
             left: 0;
             right: 0;
             z-index: 1000;
@@ -241,13 +349,13 @@
         .mobile-menu {
             display: none;
             position: fixed;
-            top: 0;
+            top: 40px;
             left: 0;
             width: 100%;
-            height: 100vh;
+            height: calc(100vh - 40px);
             background: linear-gradient(180deg, var(--midnight) 0%, var(--navy) 100%);
             z-index: 999;
-            padding: 6rem 2rem 2rem;
+            padding: 5rem 2rem 2rem;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
@@ -309,7 +417,7 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            padding: 6rem 3rem;
+            padding: 8rem 3rem 6rem;
         }
 
         .hero-bg {
@@ -1451,6 +1559,56 @@
         }
 
         @media (max-width: 768px) {
+            .announcement-bar {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .announcement-content {
+                gap: 0.5rem;
+            }
+
+            .announcement-item {
+                font-size: 0.7rem;
+            }
+
+            .announcement-item svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            .announcement-divider {
+                display: none;
+            }
+
+            .quick-info {
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .info-card {
+                padding: 1rem;
+            }
+
+            .info-card-icon {
+                width: 24px;
+                height: 24px;
+                margin-bottom: 0.5rem;
+            }
+
+            .info-card-label {
+                font-size: 0.55rem;
+            }
+
+            .info-card-value {
+                font-size: 0.95rem;
+            }
+
+            nav {
+                top: 32px;
+            }
+
             nav {
                 padding: 1rem 1rem;
                 gap: 0.5rem;
@@ -1492,12 +1650,14 @@
 
             .mobile-menu {
                 display: block;
+                top: 32px;
+                height: calc(100vh - 32px);
             }
 
             .hero {
                 padding: 5rem 1rem;
                 min-height: auto;
-                padding-top: 6rem;
+                padding-top: 7rem;
             }
 
             .hero-content {
@@ -1859,6 +2019,26 @@
     </style>
 </head>
 <body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <div class="announcement-content">
+            <div class="announcement-item">
+                <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                <span>Mobile Aircraft Maintenance & Repair</span>
+            </div>
+            <div class="announcement-divider"></div>
+            <div class="announcement-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>We Come To Your Location</span>
+            </div>
+            <div class="announcement-divider"></div>
+            <div class="announcement-item">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span>24/7 Emergency Service Available</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav>
         <a href="#" class="logo">
@@ -1914,6 +2094,33 @@
             <div class="hero-tag">Mobile A&P/IA Mechanic • NY, NJ, PA</div>
             <h1 class="hero-title">TOPGUN<br><span>Maintenance</span></h1>
             <p class="hero-subtitle">The leading provider of exceptional FAR 91/135 maintenance services. Highly skilled A&P/IA technicians committed to safety and customer satisfaction.</p>
+
+            <!-- Quick Info Cards -->
+            <div class="quick-info">
+                <div class="info-card">
+                    <svg class="info-card-icon" viewBox="0 0 24 24">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                    <div class="info-card-label">What We Do</div>
+                    <div class="info-card-value">Professional Aircraft Maintenance & Inspections</div>
+                </div>
+                <div class="info-card">
+                    <svg class="info-card-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                        <path d="M2 12h20"/>
+                    </svg>
+                    <div class="info-card-label">Where We Go</div>
+                    <div class="info-card-value">We Come To Your Hangar - NJ, NY, PA, CT, DE</div>
+                </div>
+                <div class="info-card">
+                    <svg class="info-card-icon" viewBox="0 0 24 24">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    <div class="info-card-label">When You Need Us</div>
+                    <div class="info-card-value">24/7 Emergency AOG Response Available</div>
+                </div>
+            </div>
 
             <div class="hero-stats">
                 <div class="stat">
