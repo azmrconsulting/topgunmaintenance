@@ -2554,17 +2554,51 @@
         });
 
         // Form submission handler
-        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+        document.querySelector('.contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const button = this.querySelector('.form-submit');
             const originalText = button.textContent;
-            button.textContent = 'TRANSMISSION SENT';
-            button.style.background = 'var(--cyan)';
 
+            // Show sending state
+            button.textContent = 'TRANSMITTING...';
+            button.disabled = true;
+            button.style.opacity = '0.7';
+
+            // Gather form data
+            const formData = {
+                name: this.querySelector('#name').value,
+                email: this.querySelector('#email').value,
+                phone: this.querySelector('#phone').value,
+                service: this.querySelector('#service').value,
+                message: this.querySelector('#message').value
+            };
+
+            try {
+                const response = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    button.textContent = 'TRANSMISSION SENT';
+                    button.style.background = 'var(--cyan)';
+                    this.reset();
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                button.textContent = 'TRANSMISSION FAILED';
+                button.style.background = '#ff4444';
+                console.error('Form error:', error);
+            }
+
+            // Reset button after delay
             setTimeout(() => {
                 button.textContent = originalText;
                 button.style.background = '';
-                this.reset();
+                button.disabled = false;
+                button.style.opacity = '1';
             }, 3000);
         });
 

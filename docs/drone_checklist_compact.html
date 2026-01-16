@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topgun Maintenance - Quick Reference</title>
+    <style>
+        @page {
+            margin: 0.5in;
+            size: letter;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 9pt;
+            line-height: 1.2;
+            margin: 0;
+            padding: 10px;
+            background: white;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 16pt;
+            margin: 0 0 5px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #3498db;
+        }
+        .header-info {
+            text-align: center;
+            font-size: 8pt;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        h2 {
+            color: #2980b9;
+            font-size: 11pt;
+            margin: 8px 0 4px 0;
+            padding-left: 6px;
+            border-left: 3px solid #3498db;
+        }
+        .section {
+            break-inside: avoid;
+        }
+        .item {
+            display: flex;
+            align-items: flex-start;
+            margin: 2px 0;
+            font-size: 8.5pt;
+        }
+        .checkbox {
+            min-width: 12px;
+            height: 12px;
+            border: 1.5px solid #000;
+            margin-right: 6px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+        .critical-box {
+            background: #ffe6e6;
+            border: 2px solid #dc3545;
+            padding: 6px;
+            margin: 8px 0;
+            font-size: 8pt;
+            font-weight: bold;
+            text-align: center;
+        }
+        .notes {
+            background: #fffacd;
+            border-left: 3px solid #ffc107;
+            padding: 4px 6px;
+            margin: 6px 0;
+            font-size: 7.5pt;
+        }
+        @media print {
+            body { margin: 0; padding: 10px; }
+            .no-print { display: none; }
+        }
+        .button-container {
+            text-align: center;
+            margin: 10px 0;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>✈️ TOPGUN MAINTENANCE - QUICK REFERENCE</h1>
+    <div class="header-info">DJI Inspire 1 | Part 107 Operations | Date: __________ Location: __________</div>
+
+    <div class="columns">
+        <div>
+            <div class="section">
+                <h2>PRE-FLIGHT PLANNING</h2>
+                <div class="item"><div class="checkbox"></div><div>Part 107 cert current & on person</div></div>
+                <div class="item"><div class="checkbox"></div><div>Registration current & displayed</div></div>
+                <div class="item"><div class="checkbox"></div><div>Check NOTAMs & TFRs</div></div>
+                <div class="item"><div class="checkbox"></div><div>Airspace check (LAANC if needed)</div></div>
+                <div class="item"><div class="checkbox"></div><div>Weather: wind <22mph, vis 3+ mi</div></div>
+                <div class="item"><div class="checkbox"></div><div>Daylight ops only (unless waiver)</div></div>
+            </div>
+
+            <div class="section">
+                <h2>EQUIPMENT INSPECTION</h2>
+                <div class="item"><div class="checkbox"></div><div>Airframe & landing gear intact</div></div>
+                <div class="item"><div class="checkbox"></div><div>All 4 props: no cracks/damage</div></div>
+                <div class="item"><div class="checkbox"></div><div>Props securely attached</div></div>
+                <div class="item"><div class="checkbox"></div><div>Motors spin freely</div></div>
+                <div class="item"><div class="checkbox"></div><div>Gimbal/camera secure, lens clean</div></div>
+                <div class="item"><div class="checkbox"></div><div>SD card inserted with space</div></div>
+                <div class="item"><div class="checkbox"></div><div>Battery: charged, no swelling</div></div>
+                <div class="item"><div class="checkbox"></div><div>Controller & tablet charged</div></div>
+                <div class="item"><div class="checkbox"></div><div>Spares: batteries & props packed</div></div>
+            </div>
+
+            <div class="section">
+                <h2>ON-SITE SETUP</h2>
+                <div class="item"><div class="checkbox"></div><div>Survey area: level ground, clear</div></div>
+                <div class="item"><div class="checkbox"></div><div>ID emergency landing zones</div></div>
+                <div class="item"><div class="checkbox"></div><div>Note people/obstacles/power lines</div></div>
+                <div class="item"><div class="checkbox"></div><div>Turn on CONTROLLER FIRST</div></div>
+                <div class="item"><div class="checkbox"></div><div>Power on aircraft, launch DJI GO</div></div>
+                <div class="item"><div class="checkbox"></div><div>GPS: 6+ sats (prefer 10+)</div></div>
+                <div class="item"><div class="checkbox"></div><div>Calibrate compass if needed</div></div>
+                <div class="item"><div class="checkbox"></div><div>Check IMU status</div></div>
+                <div class="item"><div class="checkbox"></div><div>Verify home point correct</div></div>
+                <div class="item"><div class="checkbox"></div><div>Set RTH altitude (20m+ obstacles)</div></div>
+                <div class="item"><div class="checkbox"></div><div>Set max altitude: 400ft AGL</div></div>
+                <div class="item"><div class="checkbox"></div><div>Flight mode: P-mode (GPS)</div></div>
+                <div class="item"><div class="checkbox"></div><div>Rear LEDs: GREEN & solid</div></div>
+                <div class="item"><div class="checkbox"></div><div>"Safe to Fly (GPS)" displayed</div></div>
+            </div>
+        </div>
+
+        <div>
+            <div class="critical-box">
+                ⚠️ VLOS REQUIRED: Maintain visual line of sight at all times with unaided eyes
+            </div>
+
+            <div class="section">
+                <h2>DURING FLIGHT</h2>
+                <div class="item"><div class="checkbox"></div><div>Hover test 5-10ft for 20-30sec</div></div>
+                <div class="item"><div class="checkbox"></div><div>Listen for unusual sounds</div></div>
+                <div class="item"><div class="checkbox"></div><div>Maintain VLOS always</div></div>
+                <div class="item"><div class="checkbox"></div><div>Stay below 400ft AGL</div></div>
+                <div class="item"><div class="checkbox"></div><div>Monitor battery (land at 30%)</div></div>
+                <div class="item"><div class="checkbox"></div><div>Monitor GPS signal</div></div>
+                <div class="item"><div class="checkbox"></div><div>Watch for weather changes</div></div>
+                <div class="item"><div class="checkbox"></div><div>Scan for other aircraft</div></div>
+                <div class="item"><div class="checkbox"></div><div>No ops over non-participants</div></div>
+            </div>
+
+            <div class="section">
+                <h2>POST-FLIGHT</h2>
+                <div class="item"><div class="checkbox"></div><div>Power off aircraft FIRST</div></div>
+                <div class="item"><div class="checkbox"></div><div>Then power off controller</div></div>
+                <div class="item"><div class="checkbox"></div><div>Inspect for new damage</div></div>
+                <div class="item"><div class="checkbox"></div><div>Check props for wear</div></div>
+                <div class="item"><div class="checkbox"></div><div>Download/backup footage</div></div>
+                <div class="item"><div class="checkbox"></div><div>Log flight: date/location/time</div></div>
+                <div class="item"><div class="checkbox"></div><div>Report incidents if required</div></div>
+                <div class="item"><div class="checkbox"></div><div>Store batteries at 40-60%</div></div>
+            </div>
+
+            <div class="section">
+                <h2>EMERGENCY</h2>
+                <div class="item"><div class="checkbox"></div><div>RTH: Press button or auto on signal loss</div></div>
+                <div class="item"><div class="checkbox"></div><div>Cancel RTH: Press RTH again</div></div>
+                <div class="item"><div class="checkbox"></div><div>Low battery = auto landing</div></div>
+                <div class="item"><div class="checkbox"></div><div>Emergency contacts ready</div></div>
+            </div>
+
+            <div class="notes">
+                <strong>Quick Notes:</strong><br>
+                • Max wind: 22mph | Battery storage: 40-60%<br>
+                • Compass: Calibrate new locations, away from metal<br>
+                • Cold weather: Warm batteries, hover 1min before maneuvers<br>
+                • Landing gear must match flight mode or motors won't start<br>
+                • Always: Controller ON first, OFF last
+            </div>
+
+            <div style="margin-top: 8px; font-size: 7pt; text-align: center; color: #666;">
+                Pilot Signature: _________________________ Flight Time: _____ Battery Used: _____
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container no-print">
+        <button onclick="window.print()">🖨️ Print One-Page Checklist</button>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // Auto-fill today's date
+            const today = new Date().toLocaleDateString();
+            document.querySelector('.header-info').innerHTML = 
+                document.querySelector('.header-info').innerHTML.replace('Date: __________', `Date: ${today}`);
+        };
+    </script>
+</body>
+</html>
