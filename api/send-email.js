@@ -19,8 +19,8 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Contact Form <noreply@topgunmaintenance.com>',
-        to: ['contact@topgunmaintenance.com'], // Change to your email
+        from: 'Top Gun Maintenance <Julian@topgunmaintenance.com>',
+        to: ['Julian@topgunmaintenance.com'],
         subject: `New Contact: ${service || 'General Inquiry'} - ${name}`,
         reply_to: email,
         html: `
