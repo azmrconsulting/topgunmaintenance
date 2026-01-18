@@ -4,11 +4,16 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, phone, service, message } = req.body;
+  const body = req.body || {};
+  const { name, email, phone, service, message } = body;
 
   // Validate required fields
   if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    console.error('Missing fields:', { name: !!name, email: !!email, message: !!message, body: req.body });
+    return res.status(400).json({
+      error: 'Missing required fields',
+      details: { name: !!name, email: !!email, message: !!message }
+    });
   }
 
   try {
