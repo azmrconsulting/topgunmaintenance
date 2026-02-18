@@ -2475,6 +2475,12 @@
             </div>
 
             <form class="contact-form fade-up">
+                <!-- Honeypot field - hidden from real users, bots will fill it -->
+                <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+                <input type="hidden" id="form-timestamp" name="timestamp" value="">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -2553,6 +2559,9 @@
             });
         });
 
+        // Set form load timestamp for bot detection
+        document.querySelector('#form-timestamp').value = Date.now().toString();
+
         // Form submission handler
         document.querySelector('.contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2570,7 +2579,9 @@
                 email: this.querySelector('#email').value,
                 phone: this.querySelector('#phone').value,
                 service: this.querySelector('#service').value,
-                message: this.querySelector('#message').value
+                message: this.querySelector('#message').value,
+                website: this.querySelector('#website').value,
+                timestamp: this.querySelector('#form-timestamp').value
             };
 
             try {
